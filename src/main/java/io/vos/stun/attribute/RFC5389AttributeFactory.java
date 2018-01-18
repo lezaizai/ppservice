@@ -12,8 +12,6 @@ public final class RFC5389AttributeFactory implements AttributeFactory {
       case ATTRIBUTE_MAPPED_ADDRESS:
       case ATTRIBUTE_XOR_MAPPED_ADDRESS:
         return new MappedAddressAttribute(type, length, valueData);
-      case ATTRIBUTE_FILEINFO:
-        return new FileInfoAttribute(type, length, valueData);
       case ATTRIBUTE_ERROR_CODE:
         return new ErrorCodeAttribute(type, length, valueData);
       case ATTRIBUTE_UNKNOWN_ATTRIBUTES:
