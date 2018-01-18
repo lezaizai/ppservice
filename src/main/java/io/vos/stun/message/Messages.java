@@ -35,7 +35,6 @@ public class Messages {
 
   /** new **/
   public static final int MESSAGE_METHOD_NEGOCIATE = 0x003;
-  public static final int MESSAGE_METHOD_TRANSFER_FILE = 0x004;
 
   public static final int MESSAGE_METHOD_MAX = 0x00A;
 
