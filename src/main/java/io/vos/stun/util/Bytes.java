@@ -1,5 +1,7 @@
 package io.vos.stun.util;
 
+import java.nio.ByteBuffer;
+
 public final class Bytes {
 
   /**
@@ -72,6 +74,16 @@ public final class Bytes {
       num |= (byteNum[ix] & 0xff);
     }
     return num;
+  }
+
+  public static byte[] double2Bytes(double value) {
+    byte[] bytes = new byte[8];
+    ByteBuffer.wrap(bytes).putDouble(value);
+    return bytes;
+  }
+
+  public static double bytes2Double(byte[] bytes) {
+    return ByteBuffer.wrap(bytes).getDouble();
   }
 
   public static byte[] padTo4ByteBoundary(byte[] data) {

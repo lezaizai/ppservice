@@ -31,6 +31,7 @@ public final class Attributes {
 
   public static final int ATTRIBUTE_SIMPLE = 0x1001;
   public static final int ATTRIBUTE_DATA = 0x1002;
+  public static final int ATTRIBUTE_LOCATION = 0x1003;
 
   /** RFC 5389 Comprehension-optional range (0x8000-0xFFFF) */
   public static final int ATTRIBUTE_SOFTWARE = 0x8022;
