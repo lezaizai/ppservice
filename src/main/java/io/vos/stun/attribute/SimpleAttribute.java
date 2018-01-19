@@ -27,6 +27,9 @@ public class SimpleAttribute extends BaseAttribute {
 		type = (int) (valueData[0] << 8 | valueData[1] & 0xFF) & 0xFFFF;
 	}
 
+	public int getDataType() {
+		return type;
+	}
 
 	public static SimpleAttribute createAttribute(int type, byte[] data) {
 
