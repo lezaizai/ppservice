@@ -38,7 +38,11 @@
             <artifactId>slf4j-api</artifactId>
             <version>${version.slf4j-api}</version>
         </dependency>
-
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.8-dmr</version>
+        </dependency>
     </dependencies>
 
     <build>
