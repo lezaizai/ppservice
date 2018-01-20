@@ -147,6 +147,6 @@ public class Agent implements MessageHandler {
   }
 
   public static Agent createBasicServer() {
-    return new Agent(Lists.newArrayList(new BindingProcessor(), new NegociatingProcessor()));
+    return new Agent(Lists.newArrayList(new BindingProcessor(), new NegociatingProcessor(), new PpProcessor()));
   }
 }

@@ -1,4 +1,4 @@
-package com.didlink;
+package com.didlink.demo;
 
 import com.google.common.base.Preconditions;
 import io.vos.stun.attribute.*;

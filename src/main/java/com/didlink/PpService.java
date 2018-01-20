@@ -13,8 +13,8 @@ import java.util.concurrent.Executors;
 public class PpService {
 
   public static void main(String[] args) throws IOException {
-    MultiThreadedServer streamServer = new MultiThreadedServer(7366);
-    DatagramServer dgramServer = new DatagramServer(7366);
+    MultiThreadedServer streamServer = new MultiThreadedServer(Constants.PP_PORT);
+    DatagramServer dgramServer = new DatagramServer(Constants.PP_PORT);
 
     ExecutorService executor = Executors.newFixedThreadPool(2);
     executor.submit(streamServer);

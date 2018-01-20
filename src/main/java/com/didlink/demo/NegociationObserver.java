@@ -1,4 +1,4 @@
-package com.didlink;
+package com.didlink.demo;
 
 import io.vos.stun.ice.Peer;
 

@@ -16,7 +16,7 @@ public class UserLocationDAO {
 
 	private static final String SQL_SAVE_LOCATION = "insert into user_location(uid,latitude,longitude,locatetime) values(?,?,?,?)";
 
-	public UserLocationDAO() throws Exception {
+	public UserLocationDAO() {
 	}
 
 	public Connection getConnection() throws Exception {

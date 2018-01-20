@@ -1,4 +1,4 @@
-package com.didlink;
+package com.didlink.demo;
 
 import io.vos.stun.ice.PeerCollection;
 
@@ -18,8 +18,8 @@ public class AppSingleton {
     }
 
 //    public static String stunServer = "www.disneyfans.cn";
-//    public static String stunServer = "localhost";
-    public static String stunServer = "10.86.130.136";
+    public static String stunServer = "localhost";
+//    public static String stunServer = "10.86.130.136";
 
     public static int stunPort = 3479;
 

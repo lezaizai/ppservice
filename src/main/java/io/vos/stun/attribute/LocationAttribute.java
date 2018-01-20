@@ -4,6 +4,7 @@ import io.vos.stun.util.Bytes;
 import io.vos.stun.util.InternetChecksum;
 
 import static io.vos.stun.attribute.Attributes.ATTRIBUTE_DATA;
+import static io.vos.stun.attribute.Attributes.ATTRIBUTE_LOCATION;
 
 /**
  *
@@ -65,6 +66,10 @@ public class LocationAttribute extends BaseAttribute {
 	public double getLongitude() {
 		return longitude;
 	}
+
+	public long getLocatetime() {
+		return locatetime;
+	}
 	
 	public static LocationAttribute createAttribute(long uid, double latitude, double longitude, long locatetime) {
 
@@ -74,7 +79,7 @@ public class LocationAttribute extends BaseAttribute {
 				Bytes.double2Bytes(longitude),
 				Bytes.long2Bytes(locatetime));
 		return new LocationAttribute(
-				ATTRIBUTE_DATA,
+				ATTRIBUTE_LOCATION,
 				valueData.length,
 				Bytes.padTo4ByteBoundary(valueData));
 	}

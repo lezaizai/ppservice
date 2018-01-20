@@ -1,4 +1,4 @@
-package com.didlink;
+package com.didlink.demo;
 
 /**
  * Created by wuh56 on 4/25/2017.
