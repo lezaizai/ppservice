@@ -44,7 +44,7 @@ final class PpProcessor extends BaseMethodProcessor {
     LocationAttribute locationAttribute = (LocationAttribute) attributes.getFirstAttributeOfType(ATTRIBUTE_LOCATION);
 
     if (locationAttribute == null) {
-      System.out.println("no location information.");
+      LOGGER.log(Level.WARNING, "no location information.");
     } else {
       UserLocation userLocation = new UserLocation(locationAttribute.getUid(),
               locationAttribute.getLatitude(),
