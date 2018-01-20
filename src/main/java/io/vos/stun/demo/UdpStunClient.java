@@ -59,7 +59,7 @@ public class UdpStunClient {
 
     public void run() {
       if (this.udpEstablishedListener != null)
-        udpEstablishedListener.established(dgramSocket, publicAddress, publicPort, localPort);
+        udpEstablishedListener.established(publicAddress, publicPort, localPort);
     }
   }
 
@@ -163,13 +163,13 @@ System.out.println(String.format("Received message from %s %d", dgramPacket.getA
         e.printStackTrace();
         isError = true;
       } finally {
-      }
-
-      if (isError && udpEstablishedListener != null) {
         if (dgramSocket != null) {
           if (dgramSocket.isConnected()) dgramSocket.disconnect();
           if (!dgramSocket.isClosed()) dgramSocket.close();
         }
+      }
+
+      if (isError && udpEstablishedListener != null) {
         if (this.timeout > 3000) {
           ErrorNotify task = new ErrorNotify(udpEstablishedListener);
           //timer.schedule(task, 10);

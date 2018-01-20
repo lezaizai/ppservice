@@ -60,12 +60,12 @@ public class UdpNegociator {
 
         UdpEstablishedListener udpEstablishedListener = new UdpEstablishedListener() {
             @Override
-            public void established(DatagramSocket dgramSocket, String publicAddress, int publicPort, int localPort) {
+            public void established(String publicAddress, int publicPort, int localPort) {
 
                 System.out.println(String.format("UdpEstablishedListener public address %s %d, local port %d", publicAddress, publicPort, localPort));
 
                 try {
-                    startListen(dgramSocket, publicAddress, publicPort, localPort);
+                    startListen(publicAddress, publicPort, localPort);
 
                     BufferedReader stdin;
                     stdin = new BufferedReader(new InputStreamReader(System.in));
@@ -125,8 +125,10 @@ public class UdpNegociator {
 //
 //    }
 
-    private void startListen(DatagramSocket dgramSocket, String publicAddress, int publicPort, int localPort) throws SocketException {
-//        DatagramSocket dgramSocket = new DatagramSocket(localPort);
+    private void startListen(String publicAddress, int publicPort, int localPort) throws SocketException {
+        DatagramSocket dgramSocket = new DatagramSocket(null);
+        dgramSocket.setReuseAddress(true);
+        dgramSocket.bind(new InetSocketAddress(localPort));
         AppSingleton.getInstance().setDgramSocket(dgramSocket);
         AppSingleton.getInstance().setSendService( createSendService(dgramSocket));
 

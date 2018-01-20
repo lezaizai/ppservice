@@ -16,7 +16,7 @@ public class PpClient {
 
         UdpEstablishedListener udpEstablishedListener = new UdpEstablishedListener() {
             @Override
-            public void established(DatagramSocket dgramSocket, String publicAddress, int publicPort, int localPort) {
+            public void established(String publicAddress, int publicPort, int localPort) {
 
                 System.out.println(String.format("UdpEstablishedListener public address %s %d, local port %d", publicAddress, publicPort, localPort));
 

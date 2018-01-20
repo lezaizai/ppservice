@@ -42,24 +42,21 @@ public class UdpPpClient {
     String publicAddress;
     int publicPort;
     int localPort;
-    DatagramSocket dgramSocket;
 
     public FollowTask(String publicAddress,
                       int publicPort,
                       int localPort,
-                      DatagramSocket dgramSocket,
                       UdpEstablishedListener udpEstablishedListener) {
       super();
       this.publicAddress = publicAddress;
       this.publicPort = publicPort;
       this.localPort = localPort;
       this.udpEstablishedListener = udpEstablishedListener;
-      this.dgramSocket = dgramSocket;
     }
 
     public void run() {
       if (this.udpEstablishedListener != null)
-        udpEstablishedListener.established(dgramSocket, publicAddress, publicPort, localPort);
+        udpEstablishedListener.established(publicAddress, publicPort, localPort);
     }
   }
 
@@ -173,14 +170,14 @@ System.out.println(String.format("Received message from %s %d", dgramPacket.getA
         System.out.println("Unable to send to / receive from stun server " + stunServer);
         e.printStackTrace();
         isError = true;
-      } finally {
-      }
-
-      if (isError && udpEstablishedListener != null) {
+      } finally  {
         if (dgramSocket != null) {
           if (dgramSocket.isConnected()) dgramSocket.disconnect();
           if (!dgramSocket.isClosed()) dgramSocket.close();
         }
+      }
+
+      if (isError && udpEstablishedListener != null) {
         if (this.timeout > 3000) {
           ErrorNotify task = new ErrorNotify(udpEstablishedListener);
           //timer.schedule(task, 10);
@@ -254,7 +251,6 @@ System.out.println(String.format("Received message from %s %d", dgramPacket.getA
             FollowTask task = new FollowTask(mappedAddr.getHostAddress(),
                     mappedAttribute.getPort(),
                     dgramSocket.getLocalPort(),
-                    dgramSocket,
                     udpEstablishedListener);
             //timer.schedule(task, 10);
             ExecutorService executor = Executors.newFixedThreadPool(1);

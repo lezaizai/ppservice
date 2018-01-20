@@ -21,7 +21,7 @@ public class AppSingleton {
     public static String stunServer = "localhost";
 //    public static String stunServer = "10.86.130.136";
 
-    public static int stunPort = 3479;
+    public static int stunPort = 7366;
 
     private PeerCollection nodeCollection = PeerCollection.EMPTY_COLLECTION;
 
