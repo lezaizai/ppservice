@@ -1,6 +1,6 @@
 package com.didlink.demo;
 
-import io.vos.stun.demo.TcpEstablishedListener;
+import io.vos.stun.demo.EstablishListener;
 import io.vos.stun.demo.TcpStunClient;
 import io.vos.stun.ice.Peer;
 import io.vos.stun.protocol.Agent;
@@ -63,11 +63,11 @@ public class TcpNegociator {
 
     public void start() throws IOException {
 
-        TcpEstablishedListener tcpEstablishedListener = new TcpEstablishedListener() {
+        EstablishListener establishListener = new EstablishListener() {
             @Override
             public void established(String publicAddress, int publicPort, int localPort) {
 
-                System.out.println(String.format("TcpEstablishedListener public address %s %d, local port %d", publicAddress, publicPort, localPort));
+                System.out.println(String.format("EstablishListener public address %s %d, local port %d", publicAddress, publicPort, localPort));
 
                 try {
                     String localIP = InetAddress.getLocalHost().getHostAddress();
@@ -113,7 +113,7 @@ public class TcpNegociator {
         };
 
         TcpStunClient tcpStunClient = new TcpStunClient();
-        tcpStunClient.tryTest(AppSingleton.stunServer, AppSingleton.stunPort, tcpEstablishedListener);
+        tcpStunClient.tryTest(AppSingleton.stunServer, AppSingleton.stunPort, establishListener);
 
     }
 

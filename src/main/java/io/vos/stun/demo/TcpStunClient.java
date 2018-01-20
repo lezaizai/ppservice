@@ -28,9 +28,9 @@ public class TcpStunClient {
 //  int port = 3479;
   int timeout = 5000; //ms
 
-  public void tryTest(String stunServer, int stunPort, TcpEstablishedListener tcpEstablishedListener) {
+  public void tryTest(String stunServer, int stunPort, EstablishListener establishListener) {
 //    timer = new Timer(true);
-    ThreadedClient task = new ThreadedClient(stunServer, stunPort, timeout, tcpEstablishedListener);
+    ThreadedClient task = new ThreadedClient(stunServer, stunPort, timeout, establishListener);
     ExecutorService executor = Executors.newFixedThreadPool(1);
     executor.submit(task);
     executor.shutdown();
@@ -39,7 +39,7 @@ public class TcpStunClient {
   }
 
   private class FollowTask extends TimerTask {
-    private TcpEstablishedListener tcpEstablishedListener;
+    private EstablishListener establishListener;
     String publicAddress;
     int publicPort;
     int localPort;
@@ -47,31 +47,31 @@ public class TcpStunClient {
     public FollowTask(String publicAddress,
                       int publicPort,
                       int localPort,
-                      TcpEstablishedListener tcpEstablishedListener) {
+                      EstablishListener establishListener) {
       super();
       this.publicAddress = publicAddress;
       this.publicPort = publicPort;
       this.localPort = localPort;
-      this.tcpEstablishedListener = tcpEstablishedListener;
+      this.establishListener = establishListener;
     }
 
     public void run() {
-      if (this.tcpEstablishedListener != null)
-        tcpEstablishedListener.established(publicAddress, publicPort, localPort);
+      if (this.establishListener != null)
+        establishListener.established(publicAddress, publicPort, localPort);
     }
   }
 
   private class ErrorNotify extends TimerTask {
-    private TcpEstablishedListener tcpEstablishedListener;
+    private EstablishListener establishListener;
 
-    public ErrorNotify(TcpEstablishedListener tcpEstablishedListener) {
+    public ErrorNotify(EstablishListener establishListener) {
       super();
-      this.tcpEstablishedListener = tcpEstablishedListener;
+      this.establishListener = establishListener;
     }
 
     public void run() {
-      if (this.tcpEstablishedListener != null)
-        tcpEstablishedListener.onError();
+      if (this.establishListener != null)
+        establishListener.onError();
     }
   }
 
@@ -81,15 +81,15 @@ public class TcpStunClient {
     private int serverPort;
     private int timeout;
     private final Agent agent;
-    private TcpEstablishedListener tcpEstablishedListener;
+    private EstablishListener establishListener;
 
-    ThreadedClient(String stunServer, int serverPort, int timeout, TcpEstablishedListener tcpEstablishedListener) {
+    ThreadedClient(String stunServer, int serverPort, int timeout, EstablishListener establishListener) {
       super();
       this.stunServer = stunServer;
       this.serverPort = serverPort;
       this.timeout = timeout;
       this.agent = Agent.createBasicServer();
-      this.tcpEstablishedListener = tcpEstablishedListener;
+      this.establishListener = establishListener;
     }
 
     public void run() {
@@ -170,9 +170,9 @@ public class TcpStunClient {
         }
       }
 
-      if (isError && tcpEstablishedListener != null) {
+      if (isError && establishListener != null) {
         if (this.timeout > 3000) {
-          ErrorNotify task = new ErrorNotify(tcpEstablishedListener);
+          ErrorNotify task = new ErrorNotify(establishListener);
           //timer.schedule(task, 10);
           ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
           executor.schedule(task, 10, TimeUnit.MILLISECONDS);
@@ -187,7 +187,7 @@ public class TcpStunClient {
         }
         System.out.println("Failed. Re-try.... ");
 
-        ThreadedClient task = new ThreadedClient(this.stunServer, this.serverPort, this.timeout*2, this.tcpEstablishedListener);
+        ThreadedClient task = new ThreadedClient(this.stunServer, this.serverPort, this.timeout*2, this.establishListener);
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         executor.schedule(task, 2000, TimeUnit.MILLISECONDS);
@@ -196,7 +196,7 @@ public class TcpStunClient {
           //new Thread(task).start();
           //timer.schedule(task, 10);
 //        } else {
-//          ErrorNotify task = new ErrorNotify(tcpEstablishedListener);
+//          ErrorNotify task = new ErrorNotify(establishListener);
 //          timer.schedule(task, 10);
 //        }
       }
@@ -244,7 +244,7 @@ public class TcpStunClient {
             FollowTask task = new FollowTask(mappedAddr.getHostAddress(),
                     mappedAttribute.getPort(),
                     socket.getLocalPort(),
-                    tcpEstablishedListener);
+                    establishListener);
             //timer.schedule(task, 10);
             ExecutorService executor = Executors.newFixedThreadPool(1);
             executor.submit(task);

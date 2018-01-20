@@ -2,7 +2,7 @@ package com.didlink;
 
 import com.google.common.base.Preconditions;
 import io.vos.stun.attribute.*;
-import io.vos.stun.demo.UdpEstablishedListener;
+import io.vos.stun.demo.EstablishListener;
 import io.vos.stun.message.Message;
 import io.vos.stun.protocol.Agent;
 import io.vos.stun.protocol.ResponseHandler;
@@ -25,7 +25,7 @@ public class UdpPpClient {
 //  int port = 3478;
   int timeout = 500; //ms
 
-  public void tryTest(String stunServer, int stunPort, UdpEstablishedListener udpEstablishedListener) {
+  public void tryTest(String stunServer, int stunPort, EstablishListener udpEstablishedListener) {
 //    timer = new Timer(true);
     ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
@@ -38,7 +38,7 @@ public class UdpPpClient {
   }
 
   private class FollowTask extends TimerTask {
-    private UdpEstablishedListener udpEstablishedListener;
+    private EstablishListener udpEstablishedListener;
     String publicAddress;
     int publicPort;
     int localPort;
@@ -46,7 +46,7 @@ public class UdpPpClient {
     public FollowTask(String publicAddress,
                       int publicPort,
                       int localPort,
-                      UdpEstablishedListener udpEstablishedListener) {
+                      EstablishListener udpEstablishedListener) {
       super();
       this.publicAddress = publicAddress;
       this.publicPort = publicPort;
@@ -61,9 +61,9 @@ public class UdpPpClient {
   }
 
   private class ErrorNotify extends TimerTask {
-    private UdpEstablishedListener udpEstablishedListener;
+    private EstablishListener udpEstablishedListener;
 
-    public ErrorNotify(UdpEstablishedListener udpEstablishedListener) {
+    public ErrorNotify(EstablishListener udpEstablishedListener) {
       super();
       this.udpEstablishedListener = udpEstablishedListener;
     }
@@ -80,9 +80,9 @@ public class UdpPpClient {
     private int serverPort;
     private int timeout;
     private final Agent agent;
-    private UdpEstablishedListener udpEstablishedListener;
+    private EstablishListener udpEstablishedListener;
 
-    DatagramClient(String stunServer, int serverPort, int timeout, UdpEstablishedListener udpEstablishedListener) {
+    DatagramClient(String stunServer, int serverPort, int timeout, EstablishListener udpEstablishedListener) {
       super();
       this.stunServer = stunServer;
       this.serverPort = serverPort;

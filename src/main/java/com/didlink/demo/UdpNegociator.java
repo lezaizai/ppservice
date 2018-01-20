@@ -2,8 +2,8 @@ package com.didlink.demo;
 
 import com.google.common.base.Preconditions;
 import io.vos.stun.attribute.*;
+import io.vos.stun.demo.EstablishListener;
 import io.vos.stun.demo.UdpStunClient;
-import io.vos.stun.demo.UdpEstablishedListener;
 import io.vos.stun.ice.Peer;
 import io.vos.stun.message.Message;
 import io.vos.stun.protocol.Agent;
@@ -58,11 +58,11 @@ public class UdpNegociator {
     public void start() throws IOException {
 //        timer = new Timer(true);
 
-        UdpEstablishedListener udpEstablishedListener = new UdpEstablishedListener() {
+        EstablishListener udpEstablishedListener = new EstablishListener() {
             @Override
             public void established(String publicAddress, int publicPort, int localPort) {
 
-                System.out.println(String.format("UdpEstablishedListener public address %s %d, local port %d", publicAddress, publicPort, localPort));
+                System.out.println(String.format("EstablishedListener public address %s %d, local port %d", publicAddress, publicPort, localPort));
 
                 try {
                     startListen(publicAddress, publicPort, localPort);
