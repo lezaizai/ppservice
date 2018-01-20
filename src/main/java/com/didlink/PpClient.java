@@ -5,10 +5,12 @@ import io.vos.stun.demo.EstablishListener;
 import java.io.IOException;
 import java.net.InetAddress;
 
+import static java.lang.Thread.sleep;
+
 public class PpClient {
 
 
-    public static void main(String[] argv) throws IOException {
+    public static void main(String[] argv) throws Exception {
 //        timer = new Timer(true);
 
         EstablishListener udpEstablishedListener = new EstablishListener() {
@@ -28,9 +30,11 @@ public class PpClient {
         String localIP = InetAddress.getLocalHost().getHostAddress();
         System.out.println(String.format("Local IP address: %s",localIP));
 
-        UdpPpClient udpPpClient = new UdpPpClient();
-        udpPpClient.tryTest("127.0.0.1", 7366, udpEstablishedListener);
-
+        for (int i=0; i<5; i++) {
+            UdpPpClient udpPpClient = new UdpPpClient();
+            udpPpClient.tryTest("127.0.0.1", 7366, 122, 3434.4343434D, 434.4344455D, 43434555665544L, udpEstablishedListener);
+            sleep(5000);
+        }
     }
 
 }

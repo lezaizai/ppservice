@@ -25,11 +25,11 @@ public class UdpPpClient {
 //  int port = 3478;
   int timeout = 500; //ms
 
-  public void tryTest(String stunServer, int stunPort, EstablishListener udpEstablishedListener) {
+  public void tryTest(String stunServer, int stunPort, long uid, double latitude, double longitude, long locatetime, EstablishListener udpEstablishedListener) {
 //    timer = new Timer(true);
     ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
-    DatagramClient task = new DatagramClient(stunServer, stunPort, timeout, udpEstablishedListener);
+    DatagramClient task = new DatagramClient(stunServer, stunPort, uid, latitude, longitude, locatetime, timeout, udpEstablishedListener);
 
     executor.schedule(task, 10, TimeUnit.MILLISECONDS);
     executor.shutdown();
@@ -82,11 +82,20 @@ public class UdpPpClient {
     private final Agent agent;
     private EstablishListener udpEstablishedListener;
 
-    DatagramClient(String stunServer, int serverPort, int timeout, EstablishListener udpEstablishedListener) {
+    private long uid;
+    private double latitude;
+    private double longitude;
+    private long locatetime;
+
+    DatagramClient(String stunServer, int serverPort, long uid, double latitude, double longitude, long locatetime, int timeout, EstablishListener udpEstablishedListener) {
       super();
       this.stunServer = stunServer;
       this.serverPort = serverPort;
+      this.uid = uid;
+      this.latitude = latitude;
+      this.longitude = longitude;
       this.timeout = timeout;
+      this.locatetime = locatetime;
       this.agent = Agent.createBasicServer();
       this.udpEstablishedListener = udpEstablishedListener;
     }
@@ -104,7 +113,7 @@ public class UdpPpClient {
         System.out.println(String.format("Started datagram client on %s %d ", dgramSocket.getLocalAddress(), dgramSocket.getLocalPort()));
 
         Attribute attribute = LocationAttribute
-                .createAttribute(111, 222.33433D, 3232.3233D, 2323343333L);
+                .createAttribute(uid, latitude, longitude, locatetime);
         AttributesCollection attributes = AttributesCollection.EMPTY_COLLECTION;
 
         byte[] attributeBytes = attributes.replyBuilder()
@@ -194,7 +203,14 @@ System.out.println(String.format("Received message from %s %d", dgramPacket.getA
         }
         System.out.println("Failed. Re-try.... ");
 
-        DatagramClient task = new DatagramClient(this.stunServer, this.serverPort, this.timeout*2, this.udpEstablishedListener);
+        DatagramClient task = new DatagramClient(this.stunServer,
+                this.serverPort,
+                this.uid,
+                this.latitude,
+                this.longitude,
+                this.locatetime,
+                this.timeout*2,
+                this.udpEstablishedListener);
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         executor.schedule(task, 2000, TimeUnit.MILLISECONDS);
