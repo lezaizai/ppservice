@@ -25,16 +25,28 @@ public class UdpPpClient {
 //  int port = 3478;
   int timeout = 500; //ms
 
-  public void tryTest(String stunServer, int stunPort, long uid, double latitude, double longitude, long locatetime, EstablishListener udpEstablishedListener) {
-//    timer = new Timer(true);
+  public void tryTest(DatagramSocket datagramSocket,
+                      String stunServer,
+                      int stunPort,
+                      long uid,
+                      double latitude,
+                      double longitude,
+                      long locatetime,
+                      EstablishListener udpEstablishedListener) {
     ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
-    DatagramClient task = new DatagramClient(stunServer, stunPort, uid, latitude, longitude, locatetime, timeout, udpEstablishedListener);
+    DatagramClient task = new DatagramClient(datagramSocket,
+            stunServer,
+            stunPort,
+            uid,
+            latitude,
+            longitude,
+            locatetime,
+            timeout,
+            udpEstablishedListener);
 
     executor.schedule(task, 10, TimeUnit.MILLISECONDS);
     executor.shutdown();
-    //timer.schedule(task, 10);
-
   }
 
   private class FollowTask extends TimerTask {
@@ -76,6 +88,7 @@ public class UdpPpClient {
 
   private class DatagramClient extends TimerTask {
 
+    private DatagramSocket dgramSocket;
     private String stunServer;
     private int serverPort;
     private int timeout;
@@ -87,8 +100,17 @@ public class UdpPpClient {
     private double longitude;
     private long locatetime;
 
-    DatagramClient(String stunServer, int serverPort, long uid, double latitude, double longitude, long locatetime, int timeout, EstablishListener udpEstablishedListener) {
+    DatagramClient(DatagramSocket dgramSocket,
+                   String stunServer,
+                   int serverPort,
+                   long uid,
+                   double latitude,
+                   double longitude,
+                   long locatetime,
+                   int timeout,
+                   EstablishListener udpEstablishedListener) {
       super();
+      this.dgramSocket = dgramSocket;
       this.stunServer = stunServer;
       this.serverPort = serverPort;
       this.uid = uid;
@@ -102,11 +124,11 @@ public class UdpPpClient {
 
     public void run() {
 
-      DatagramSocket dgramSocket = null;
+      //DatagramSocket dgramSocket = null;
       boolean isError = false;
       try {
-        dgramSocket = new DatagramSocket();
-        dgramSocket.setReuseAddress(true);
+        //dgramSocket = new DatagramSocket();
+        //dgramSocket.setReuseAddress(true);
 //        dgramSocket.connect(InetAddress.getByName(stunServer), serverPort);
         dgramSocket.setSoTimeout(timeout);
 
@@ -180,10 +202,10 @@ System.out.println(String.format("Received message from %s %d", dgramPacket.getA
         e.printStackTrace();
         isError = true;
       } finally  {
-        if (dgramSocket != null) {
-          if (dgramSocket.isConnected()) dgramSocket.disconnect();
-          if (!dgramSocket.isClosed()) dgramSocket.close();
-        }
+//        if (dgramSocket != null) {
+//          if (dgramSocket.isConnected()) dgramSocket.disconnect();
+//          if (!dgramSocket.isClosed()) dgramSocket.close();
+//        }
       }
 
       if (isError && udpEstablishedListener != null) {
@@ -203,7 +225,8 @@ System.out.println(String.format("Received message from %s %d", dgramPacket.getA
         }
         System.out.println("Failed. Re-try.... ");
 
-        DatagramClient task = new DatagramClient(this.stunServer,
+        DatagramClient task = new DatagramClient(this.dgramSocket,
+                this.stunServer,
                 this.serverPort,
                 this.uid,
                 this.latitude,
