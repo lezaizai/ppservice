@@ -179,27 +179,15 @@ public class TcpPpClient {
           executor.schedule(task, 10, TimeUnit.MILLISECONDS);
           executor.shutdown();
 
-          try {
-            Thread.sleep(5000);
-          } catch (InterruptedException e) {
-            e.printStackTrace();
-          }
-          this.timeout = 500;
+        } else {
+          System.out.println("Failed. Re-try.... ");
+
+          ThreadedClient task = new ThreadedClient(this.stunServer, this.serverPort, this.timeout * 2, this.establishListener);
+
+          ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+          executor.schedule(task, 2000, TimeUnit.MILLISECONDS);
+          executor.shutdown();
         }
-        System.out.println("Failed. Re-try.... ");
-
-        ThreadedClient task = new ThreadedClient(this.stunServer, this.serverPort, this.timeout*2, this.establishListener);
-
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.schedule(task, 2000, TimeUnit.MILLISECONDS);
-        executor.shutdown();
-
-          //new Thread(task).start();
-          //timer.schedule(task, 10);
-//        } else {
-//          ErrorNotify task = new ErrorNotify(establishListener);
-//          timer.schedule(task, 10);
-//        }
       }
 
     }

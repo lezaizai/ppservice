@@ -11,6 +11,7 @@ import io.vos.stun.util.Bytes;
 import javax.xml.stream.Location;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +48,8 @@ final class PpProcessor extends BaseMethodProcessor {
       LOGGER.log(Level.WARNING, "no location information.");
     } else {
       UserLocation userLocation = new UserLocation(locationAttribute.getUid(),
+              requestContext.getReplyAddress().getAddress().getHostAddress(),
+              requestContext.getReplyAddress().getPort(),
               locationAttribute.getLatitude(),
               locationAttribute.getLongitude(),
               locationAttribute.getLocatetime());

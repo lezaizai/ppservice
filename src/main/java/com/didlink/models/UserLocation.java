@@ -6,12 +6,16 @@ import java.sql.Timestamp;
 public class UserLocation {
     long lid;
     long uid;
+    String address;
+    int port;
     double latitude;
     double longtitude;
     long locatetime;
 
-    public UserLocation(long uid, double latitude, double longtitude, long locatetime) {
+    public UserLocation(long uid, String address, int port, double latitude, double longtitude, long locatetime) {
         this.uid = uid;
+        this.address = address;
+        this.port = port;
         this.latitude = latitude;
         this.longtitude = longtitude;
         this.locatetime = locatetime;
@@ -27,6 +31,14 @@ public class UserLocation {
 
     public long getUid(){
         return uid;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public int getPort() {
+        return port;
     }
 
     public double getLatitude() {

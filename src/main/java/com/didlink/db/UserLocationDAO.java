@@ -14,7 +14,7 @@ public class UserLocationDAO {
 	private static final Logger LOGGER = Logger
 			.getLogger(UserLocationDAO.class.getName());
 
-	private static final String SQL_SAVE_LOCATION = "insert into user_location(uid,latitude,longitude,locatetime) values(?,?,?,?)";
+	private static final String SQL_SAVE_LOCATION = "insert into user_location(uid,address,port,latitude,longitude,locatetime) values(?,?,?,?,?,?)";
 
 	public UserLocationDAO() {
 	}
@@ -87,9 +87,11 @@ public class UserLocationDAO {
 			statement = con.prepareStatement(sQry);
 
 			statement.setLong(1, oLocation.getUid());
-			statement.setDouble(2, oLocation.getLatitude());
-			statement.setDouble(3, oLocation.getLongtitude());
-			statement.setLong(4, oLocation.getLocatetime());
+			statement.setString(2, oLocation.getAddress());
+			statement.setInt(3, oLocation.getPort());
+			statement.setDouble(4, oLocation.getLatitude());
+			statement.setDouble(5, oLocation.getLongtitude());
+			statement.setLong(6, oLocation.getLocatetime());
 
 			statement.executeUpdate();
 
